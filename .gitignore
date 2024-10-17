@@ -1,3 +1,10 @@
 /.venv
-/fake_test
+
+/lightning_logs/*
+
 /src/data_preprocessing/__pycache__
+/src/GA_layers/__pycache__
+/src/BaseLine/__pycache__
+/src/Utils/__pycache__
+
+/prototype.ipynb
