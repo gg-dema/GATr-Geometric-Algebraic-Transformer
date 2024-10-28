@@ -41,9 +41,8 @@ class MVDataModule(pl.LightningDataModule):
                 self.n_samples = self.train_dataset.n_samples
 
             else:
-                paths_train = [os.path.join(
-                    self.datasets_path, 'train', file) 
-                    for file in os.listdir(os.path.join(self.datasets_path, 'train'))
+                paths_train = [os.path.join(self.datasets_path, 'train', file) 
+                    for file in os.listdir(os.path.join(self.datasets_path, 'train')) if file.endswith('.hdf5')
                 ]
 
                 # FULL DATASET
@@ -55,7 +54,7 @@ class MVDataModule(pl.LightningDataModule):
             # OVERWRITE THE FULL DATASET --> TRAIN / VAL
             self.train_dataset, self.val_dataset = random_split(self.train_dataset, [0.8, 0.2])
         
-        if stage == "test" or None:
+        if stage == "test" or stage is None:
             
             if self.load_dataset:
                 self.test_dataset = MVDataset(load_data=True,
@@ -63,9 +62,8 @@ class MVDataModule(pl.LightningDataModule):
                                               )
                 self.n_samples = self.test_dataset.n_samples
             else:
-                paths_test = [os.path.join(
-                    self.datasets_path, 'test', file) 
-                    for file in os.listdir(os.path.join(self.datasets_path, 'train'))
+                paths_test = [os.path.join(self.datasets_path, 'test', file) 
+                    for file in os.listdir(os.path.join(self.datasets_path, 'train')) if file.endswith('.hdf5')
                 ]
 
                 self.test_dataset = MVDataset()
@@ -75,10 +73,17 @@ class MVDataModule(pl.LightningDataModule):
 
 
     def train_dataloader(self):
-        return DataLoader(self.train_dataset, batch_size=self.batch_size)
+        return DataLoader(self.train_dataset, 
+                          batch_size=self.batch_size,
+                          shuffle=False)
     
     def val_dataloader(self):
-        return DataLoader(self.val_dataset, batch_size=self.batch_size)
+        return DataLoader(self.val_dataset,
+                          batch_size=self.batch_size,
+                          shuffle=False)
+    
     
     def test_dataloader(self):
-        return DataLoader(self.test_dataset, batch_size=self.batch_size)
+        return DataLoader(self.test_dataset,
+                           batch_size=self.batch_size,
+                           shuffle=False)
