@@ -1,0 +1,8 @@
+[flake8]
+max-line-length = 100
+ignore =
+    E712    # if format --> give problem with tensor operations
+exclude = 
+    .git,
+    __pycache__,
+    .venv,
